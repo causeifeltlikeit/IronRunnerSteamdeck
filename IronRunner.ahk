@@ -223,8 +223,10 @@ F12:: {
     toggle := !toggle
     if toggle {
         WinGetClientPos(&_, &_, &width, &height, "ahk_exe mhf.exe")
-        static coordinates := UICoordinates(width, height)
-        static iron_left := 99
+        static coordinates
+        coordinates := UICoordinates(width, height)
+        static iron_left
+        iron_left := 3
         SetTimer(runner, 1)
     } else {
         SetTimer(runner, 0)
