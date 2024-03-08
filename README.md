@@ -23,6 +23,6 @@ If you run MHF as admin, edit the script and change the line `run_as_admin := fa
 
 If you notice the script not menu correctly (turning in the iron or accepting rewards), edit the script and change `input_delay` at the top to a higher number. Try 100 first, then increase if you still encounter problems.
 
-If you forcibly stop the script, some keys (WASD and left shift mostly) may still be held down. Pressing any stuck down key yourself will fix it.
+If you forcibly stop the script, some keys (movement keys and sprint mostly) may still be held down. Pressing any stuck down key yourself will fix it.
 
 The script can't recover from connection errors when accepting the quest or departing. F11 to restart the script, then do setup again.
