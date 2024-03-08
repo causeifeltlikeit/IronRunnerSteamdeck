@@ -3,6 +3,8 @@ Requires [AutoHotkey v2.0](https://www.autohotkey.com/)
 
 The script works by detecting certain UI elements whose position changes based on resolution. Supported game resolutions: 2560x1440, 1920x1080, 1280x720, 640x480
 
+Press F11 to restart the script and stop anything it's doing.
+
 ## Setup
 If you've changed the ingame keybinds, edit the script and change the keybinds near the top.
 
@@ -16,7 +18,7 @@ Face the camera at the quest departure area. Aim for the same camera angle you r
 
 Talk to the general quest giver and highlight the iron delivery quest in your favorites or quest history.
 
-F12 to start. F12 again to stop after the current loop. F11 to stop immediately.
+F12 with the game focused to start. F12 again to stop after the current loop. F11 to stop immediately.
 
 ## Troubleshooting
 If you run MHF as admin, edit the script and change the line `run_as_admin := false` to `run_as_admin := true`, or run the script as admin yourself.
