@@ -226,7 +226,7 @@ F12:: {
         static coordinates
         coordinates := UICoordinates(width, height)
         static iron_left
-        iron_left := 3
+        iron_left := 99
         SetTimer(runner, 1)
     } else {
         SetTimer(runner, 0)
