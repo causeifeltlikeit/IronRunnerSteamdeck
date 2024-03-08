@@ -216,6 +216,8 @@ key_up(key) {
     Send("{" . key . " up}")
 }
 
+#HotIf WinActive("ahk_exe mhf.exe")
+
 F12:: {
     static toggle := false
     toggle := !toggle
