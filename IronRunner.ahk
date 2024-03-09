@@ -110,7 +110,8 @@ accept_quest(quest_accept_coord) {
     key_press(confirm)
 }
 
-depart_on_quest(quest_depart_coord) {
+depart_on_quest(season_coord, quest_depart_coord) {
+    wait_for_lobby(season_coord)
     key_down(sprint)
     key_down(move_forward)
     key_down(move_right)
@@ -191,7 +192,8 @@ resupply_at_chest() {
     key_press(cancel)
 }
 
-depart_on_quest_from_box(quest_depart_coord) {
+depart_on_quest_from_box(season_coord, quest_depart_coord) {
+    wait_for_lobby(season_coord)
     key_down(sprint)
     key_down(move_forward)
     key_down(move_left)
@@ -236,7 +238,7 @@ key_up(key) {
         static coordinates
         coordinates := UICoordinates(width, height)
         static iron_left
-        iron_left := 3
+        iron_left := 99
         SetTimer(runner, 1)
     } else {
         SetTimer(runner, 0)
@@ -246,9 +248,9 @@ key_up(key) {
         if (iron_left < 3) {
             resupply_at_chest()
             iron_left := 99
-            depart_on_quest_from_box(coordinates.quest_depart)
+            depart_on_quest_from_box(coordinates.season, coordinates.quest_depart)
         } else {
-            depart_on_quest(coordinates.quest_depart)
+            depart_on_quest(coordinates.season, coordinates.quest_depart)
         }
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
         deposit_iron()
