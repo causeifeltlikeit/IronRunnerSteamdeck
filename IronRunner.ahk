@@ -85,9 +85,9 @@ wait_for_lobby(season_coord) {
 }
 
 get_to_quest_npc(season_coord) {
-    wait_for_lobby(season_coord)
     key_down(sprint)
     key_down(move_back)
+    wait_for_lobby(season_coord)
     Sleep(1000)
     key_down(move_left)
     while is_season_daytime_box_visible(season_coord) {
@@ -111,10 +111,10 @@ accept_quest(quest_accept_coord) {
 }
 
 depart_on_quest(season_coord, quest_depart_coord) {
-    wait_for_lobby(season_coord)
     key_down(sprint)
     key_down(move_forward)
     key_down(move_right)
+    wait_for_lobby(season_coord)
     Sleep(1500)
     key_up(move_right)
     Sleep(1500)
@@ -176,10 +176,11 @@ cancel_quest_endscreen() {
     }
 }
 
-resupply_at_chest() {
+resupply_at_chest(season_coord) {
     key_down(sprint)
     key_down(move_forward)
     key_down(move_right)
+    wait_for_lobby(season_coord)
     Sleep(2300)
     key_up(move_right)
     Sleep(500)
@@ -192,8 +193,7 @@ resupply_at_chest() {
     key_press(cancel)
 }
 
-depart_on_quest_from_box(season_coord, quest_depart_coord) {
-    wait_for_lobby(season_coord)
+depart_on_quest_from_box(quest_depart_coord) {
     key_down(sprint)
     key_down(move_forward)
     key_down(move_left)
@@ -246,9 +246,9 @@ key_up(key) {
     runner() {
         accept_quest(coordinates.quest_accept)
         if (iron_left < 3) {
-            resupply_at_chest()
+            resupply_at_chest(coordinates.season)
             iron_left := 99
-            depart_on_quest_from_box(coordinates.season, coordinates.quest_depart)
+            depart_on_quest_from_box(coordinates.quest_depart)
         } else {
             depart_on_quest(coordinates.season, coordinates.quest_depart)
         }
