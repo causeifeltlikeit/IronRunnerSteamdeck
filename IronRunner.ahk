@@ -29,11 +29,7 @@ if (!A_IsAdmin && run_as_admin) {
     Run('*RunAs "' A_ScriptFullPath '" /restart')
 }
 
-F11:: {
-    Reload
-}
-
-+F11:: {
+*F11:: {
     Reload
 }
 
@@ -120,11 +116,16 @@ depart_on_quest(quest_depart_coord) {
     key_down(move_right)
     Sleep(1500)
     key_up(move_right)
-    while !is_quest_depart_box_visible(quest_depart_coord) {
+    Sleep(1500)
+    Loop 5 {
         key_press(confirm)
+        Sleep(100)
     }
     key_up(move_forward)
     key_up(sprint)
+    while !is_quest_depart_box_visible(quest_depart_coord) {
+        Sleep(50)
+    }
     key_press(confirm)
     Sleep(2000)
 }
@@ -144,6 +145,10 @@ get_to_red_box(health_coord, ore_deposit_coord) {
 
 deposit_iron() {
     key_press(confirm)
+    key_press(confirm)
+    key_press(menu_up)
+    key_press(confirm)
+    key_press(menu_up)
     key_press(confirm)
     key_press(menu_up)
     key_press(confirm)
@@ -192,11 +197,16 @@ depart_on_quest_from_box(quest_depart_coord) {
     key_down(move_left)
     Sleep(1000)
     key_up(move_left)
-    while !is_quest_depart_box_visible(quest_depart_coord) {
+    Sleep(500)
+    Loop 5 {
         key_press(confirm)
+        Sleep(100)
     }
     key_up(move_forward)
     key_up(sprint)
+    while !is_quest_depart_box_visible(quest_depart_coord) {
+        Sleep(50)
+    }
     key_press(confirm)
     Sleep(2000)
 }
@@ -218,7 +228,7 @@ key_up(key) {
 
 #HotIf WinActive("ahk_exe mhf.exe")
 
-F12:: {
+*F12:: {
     static toggle := false
     toggle := !toggle
     if toggle {
@@ -226,7 +236,7 @@ F12:: {
         static coordinates
         coordinates := UICoordinates(width, height)
         static iron_left
-        iron_left := 99
+        iron_left := 3
         SetTimer(runner, 1)
     } else {
         SetTimer(runner, 0)
