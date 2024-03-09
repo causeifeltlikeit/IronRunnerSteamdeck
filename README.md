@@ -3,6 +3,8 @@ Requires [AutoHotkey v2.0](https://www.autohotkey.com/)
 
 The script works by detecting certain UI elements whose position changes based on resolution. Supported game resolutions: 2560x1440, 1920x1080, 1280x720, 640x480
 
+Your game window size must match the chosen resolution. In fullscreen your native resolution must be the same as the game resolution. In windowed make sure the window isn't being scaled by Windows or something else. Right click your desktop, choose display settings, then under Scale and layout check that the size of text, apps and other items is 100%.
+
 Press F11 to restart the script and stop anything it's doing.
 
 ## Setup
