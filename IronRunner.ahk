@@ -1,4 +1,4 @@
-; v1.1.0
+; v1.1.1
 #Requires AutoHotkey v2
 #SingleInstance
 
