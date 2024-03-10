@@ -133,7 +133,7 @@ depart_on_quest(season_coord, quest_accept_coord, quest_depart_coord) {
     while !is_quest_depart_box_visible(quest_depart_coord) {
         if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
             recover_from_connection_error(season_coord, quest_accept_coord)
-            check_start := A_Now
+            connection_error_check := A_Now
         }
         Sleep(50)
     }
@@ -214,7 +214,7 @@ depart_on_quest_from_box(season_coord, quest_accept_coord, quest_depart_coord) {
     while !is_quest_depart_box_visible(quest_depart_coord) {
         if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
             recover_from_connection_error(season_coord, quest_accept_coord)
-            check_start := A_Now
+            connection_error_check := A_Now
         }
         Sleep(50)
     }
