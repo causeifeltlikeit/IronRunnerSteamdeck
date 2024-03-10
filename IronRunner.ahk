@@ -1,4 +1,4 @@
-; v1.0.2
+; v1.1.0
 #Requires AutoHotkey v2
 #SingleInstance
 
@@ -23,23 +23,6 @@ cancel := "Backspace"
 start_menu := "Escape"
 
 item_set := "F"
-
-; move_forward := "W"
-; move_back := "S"
-; move_left := "A"
-; move_right := "D"
-; sprint := "Shift"
-
-; menu_up := "Up"
-; menu_down := "Down"
-; menu_left := "Left"
-; menu_right := "Right"
-
-; confirm := "U"
-; cancel := "O"
-; start_menu := "Escape"
-
-; item_set := "Q"
 
 ;=================================================================================================
 
@@ -128,7 +111,7 @@ accept_quest(season_coord, quest_accept_coord) {
     key_down(move_right)
     connection_error_check := A_Now
     while !is_season_daytime_box_visible(season_coord) {
-        if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
+        if (DateDiff(A_Now, connection_error_check, "Seconds") > 30) {
             accept_quest(season_coord, quest_accept_coord)
             break
         }
