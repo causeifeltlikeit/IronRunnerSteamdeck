@@ -1,3 +1,4 @@
+; v1.0.2
 #Requires AutoHotkey v2
 #SingleInstance
 
@@ -99,22 +100,22 @@ get_to_quest_npc(season_coord) {
     key_up(sprint)
 }
 
-accept_quest(quest_accept_coord) {
+accept_quest(season_coord, quest_accept_coord) {
     while !is_accepting_quest_dialog_visible(quest_accept_coord) {
         key_press(confirm)
     }
     while is_accepting_quest_dialog_visible(quest_accept_coord) {
         Sleep(50)
     }
-    Sleep(500)
-    key_press(confirm)
-}
-
-depart_on_quest(season_coord, quest_depart_coord) {
     key_down(sprint)
     key_down(move_forward)
     key_down(move_right)
-    wait_for_lobby(season_coord)
+    while !is_season_daytime_box_visible(season_coord) {
+        key_press(cancel)
+    }
+}
+
+depart_on_quest(quest_depart_coord) {
     Sleep(1500)
     key_up(move_right)
     Sleep(1500)
@@ -147,12 +148,10 @@ get_to_red_box(health_coord, ore_deposit_coord) {
 deposit_iron() {
     key_press(confirm)
     key_press(confirm)
-    key_press(menu_up)
-    key_press(confirm)
-    key_press(menu_up)
-    key_press(confirm)
-    key_press(menu_up)
-    key_press(confirm)
+    Loop 5 {
+        key_press(menu_up)
+        key_press(confirm)
+    }
 }
 
 wait_for_rewards(reward_coord) {
@@ -176,11 +175,7 @@ cancel_quest_endscreen() {
     }
 }
 
-resupply_at_chest(season_coord) {
-    key_down(sprint)
-    key_down(move_forward)
-    key_down(move_right)
-    wait_for_lobby(season_coord)
+resupply_at_chest() {
     Sleep(2300)
     key_up(move_right)
     Sleep(500)
@@ -244,13 +239,13 @@ key_up(key) {
         SetTimer(runner, 0)
     }
     runner() {
-        accept_quest(coordinates.quest_accept)
+        accept_quest(coordinates.season, coordinates.quest_accept)
         if (iron_left < 3) {
-            resupply_at_chest(coordinates.season)
+            resupply_at_chest()
             iron_left := 99
             depart_on_quest_from_box(coordinates.quest_depart)
         } else {
-            depart_on_quest(coordinates.season, coordinates.quest_depart)
+            depart_on_quest(coordinates.quest_depart)
         }
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
         deposit_iron()
