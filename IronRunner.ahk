@@ -1,4 +1,4 @@
-; v1.1.1
+; v1.1.2
 #Requires AutoHotkey v2
 #SingleInstance
 
@@ -18,6 +18,7 @@ menu_down := "Down"
 menu_left := "Left"
 menu_right := "Right"
 
+interact := "E"
 confirm := "E"
 cancel := "Backspace"
 start_menu := "Escape"
@@ -92,7 +93,7 @@ get_to_quest_npc(season_coord) {
     Sleep(1000)
     key_down(move_left)
     while is_season_daytime_box_visible(season_coord) {
-        key_press(confirm)
+        key_press_double(interact, confirm)
     }
     key_up(move_left)
     key_up(move_back)
@@ -106,9 +107,6 @@ accept_quest(season_coord, quest_accept_coord) {
     while is_accepting_quest_dialog_visible(quest_accept_coord) {
         Sleep(50)
     }
-    key_down(sprint)
-    key_down(move_forward)
-    key_down(move_right)
     connection_error_check := A_Now
     while !is_season_daytime_box_visible(season_coord) {
         if (DateDiff(A_Now, connection_error_check, "Seconds") > 30) {
@@ -119,16 +117,23 @@ accept_quest(season_coord, quest_accept_coord) {
     }
 }
 
-depart_on_quest(season_coord, quest_accept_coord, quest_depart_coord) {
-    Sleep(1500)
+get_to_departure_dialog() {
+    key_down(sprint)
+    key_down(move_forward)
+    Sleep(500)
+    key_down(move_right)
+    Sleep(1000)
     key_up(move_right)
     Sleep(1500)
     Loop 5 {
-        key_press(confirm)
+        key_press(interact)
         Sleep(100)
     }
     key_up(move_forward)
     key_up(sprint)
+}
+
+depart_on_quest(season_coord, quest_accept_coord, quest_depart_coord) {
     connection_error_check := A_Now
     while !is_quest_depart_box_visible(quest_depart_coord) {
         if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
@@ -148,7 +153,7 @@ get_to_red_box(health_coord, ore_deposit_coord) {
         Sleep(50)
     }
     while (!PixelSearch(&_, &_, ore_deposit_coord.x, ore_deposit_coord.y, ore_deposit_coord.x, ore_deposit_coord.y, 0x7D6851, 5)) {
-        key_press(confirm)
+        key_press(interact)
     }
     key_up(move_back)
     key_up(move_right)
@@ -185,19 +190,23 @@ cancel_quest_endscreen() {
 }
 
 resupply_at_chest() {
-    Sleep(2300)
+    key_down(sprint)
+    key_down(move_forward)
+    Sleep(500)
+    key_down(move_right)
+    Sleep(2000)
     key_up(move_right)
     Sleep(500)
     key_up(move_forward)
     key_up(sprint)
     Sleep(1500)
-    key_press(confirm)
+    key_press(interact)
     Sleep(500)
     key_press(item_set)
     key_press(cancel)
 }
 
-depart_on_quest_from_box(season_coord, quest_accept_coord, quest_depart_coord) {
+get_to_departure_dialog_from_box() {
     key_down(sprint)
     key_down(move_forward)
     key_down(move_left)
@@ -205,21 +214,11 @@ depart_on_quest_from_box(season_coord, quest_accept_coord, quest_depart_coord) {
     key_up(move_left)
     Sleep(500)
     Loop 5 {
-        key_press(confirm)
+        key_press(interact)
         Sleep(100)
     }
     key_up(move_forward)
     key_up(sprint)
-    connection_error_check := A_Now
-    while !is_quest_depart_box_visible(quest_depart_coord) {
-        if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
-            recover_from_connection_error(season_coord, quest_accept_coord)
-            connection_error_check := A_Now
-        }
-        Sleep(50)
-    }
-    key_press(confirm)
-    Sleep(2000)
 }
 
 recover_from_connection_error(season_coord, quest_accept_coord) {
@@ -234,17 +233,21 @@ recover_from_connection_error(season_coord, quest_accept_coord) {
     Sleep(2800)
     key_down(move_left)
     while is_season_daytime_box_visible(season_coord) {
-        key_press(confirm)
+        key_press_double(interact, confirm)
     }
     key_up(move_left)
     key_up(move_back)
     key_up(sprint)
     accept_quest(season_coord, quest_accept_coord)
-    Sleep(1500)
+    key_down(sprint)
+    key_down(move_forward)
+    Sleep(500)
+    key_down(move_right)
+    Sleep(1000)
     key_up(move_right)
     Sleep(1500)
     Loop 5 {
-        key_press(confirm)
+        key_press(interact)
         Sleep(100)
     }
     key_up(move_forward)
@@ -255,6 +258,15 @@ key_press(key) {
     key_down(key)
     Sleep(50)
     key_up(key)
+    Sleep(input_delay)
+}
+
+key_press_double(key1, key2) {
+    key_down(key1)
+    key_down(key2)
+    Sleep(50)
+    key_up(key1)
+    key_up(key2)
     Sleep(input_delay)
 }
 
@@ -286,8 +298,10 @@ key_up(key) {
         if (iron_left < 3) {
             resupply_at_chest()
             iron_left := 99
-            depart_on_quest_from_box(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
+            get_to_departure_dialog_from_box()
+            depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
         } else {
+            get_to_departure_dialog()
             depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
         }
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
