@@ -102,7 +102,7 @@ get_to_quest_npc(season_coord) {
 
 accept_quest(season_coord, quest_accept_coord) {
     while !is_accepting_quest_dialog_visible(quest_accept_coord) {
-        key_press(confirm)
+        key_press_double(confirm, interact)
     }
     while is_accepting_quest_dialog_visible(quest_accept_coord) {
         Sleep(50)
