@@ -1,4 +1,4 @@
-; v1.1.2
+; v1.2.0
 #Requires AutoHotkey v2
 #SingleInstance
 
@@ -152,7 +152,11 @@ get_to_red_box(health_coord, ore_deposit_coord) {
     while !is_health_bar_visible(health_coord) {
         Sleep(50)
     }
-    while (!PixelSearch(&_, &_, ore_deposit_coord.x, ore_deposit_coord.y, ore_deposit_coord.x, ore_deposit_coord.y, 0x7D6851, 5)) {
+    fallback_check := A_Now
+    while (!PixelSearch(&_, &_, ore_deposit_coord.x, ore_deposit_coord.y, ore_deposit_coord.x, ore_deposit_coord.y, 0x7D6851, 10)) {
+        if (DateDiff(A_Now, fallback_check, "Seconds") > 5) {
+            break
+        }
         key_press(interact)
     }
     key_up(move_back)
@@ -169,7 +173,11 @@ deposit_iron() {
 }
 
 wait_for_rewards(reward_coord) {
-    while (!PixelSearch(&_, &_, reward_coord.x, reward_coord.y, reward_coord.x, reward_coord.y, 0x78624A, 5)) {
+    fallback_check := A_Now
+    while (!PixelSearch(&_, &_, reward_coord.x, reward_coord.y, reward_coord.x, reward_coord.y, 0x78624A, 10)) {
+        if (DateDiff(A_Now, fallback_check, "Seconds") > 120) {
+            break
+        }
         Sleep(100)
     }
 }
@@ -289,11 +297,26 @@ key_up(key) {
         coordinates := UICoordinates(width, height)
         static iron_left
         iron_left := 99
+        startup()
         SetTimer(runner, 1)
     } else {
         SetTimer(runner, 0)
     }
+
+    startup() {
+        key_press(interact)
+        depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
+        get_to_red_box(coordinates.health, coordinates.ore_deposit)
+        deposit_iron()
+        wait_for_rewards(coordinates.reward)
+        send_rewards_to_box()
+        cancel_quest_endscreen()
+        iron_left -= 3
+    }
+
     runner() {
+        wait_for_lobby(coordinates.season)
+        get_to_quest_npc(coordinates.season)
         accept_quest(coordinates.season, coordinates.quest_accept)
         if (iron_left < 3) {
             resupply_at_chest()
@@ -310,7 +333,5 @@ key_up(key) {
         send_rewards_to_box()
         cancel_quest_endscreen()
         iron_left -= 3
-        wait_for_lobby(coordinates.season)
-        get_to_quest_npc(coordinates.season)
     }
 }
