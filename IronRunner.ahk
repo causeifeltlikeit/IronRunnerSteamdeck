@@ -124,11 +124,8 @@ get_to_departure_dialog() {
     key_down(move_right)
     Sleep(1000)
     key_up(move_right)
-    Sleep(1500)
-    Loop 5 {
-        key_press(interact)
-        Sleep(100)
-    }
+    Sleep(2500)
+    key_press(interact)
     key_up(move_forward)
     key_up(sprint)
 }
@@ -220,11 +217,8 @@ get_to_departure_dialog_from_box() {
     key_down(move_left)
     Sleep(1000)
     key_up(move_left)
-    Sleep(500)
-    Loop 5 {
-        key_press(interact)
-        Sleep(100)
-    }
+    Sleep(1500)
+    key_press(interact)
     key_up(move_forward)
     key_up(sprint)
 }
