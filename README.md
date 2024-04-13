@@ -5,8 +5,6 @@ The script works by detecting certain UI elements whose position changes based o
 
 Your game window size must match the chosen resolution. In fullscreen your native resolution must be the same as the game resolution. In windowed make sure the window isn't being scaled by Windows or something else. Right click your desktop, choose display settings, then under Scale and layout check that the size of text, apps and other items is 100%.
 
-Press F11 to restart the script and stop anything it's doing.
-
 ## Setup
 If you've changed the ingame keybinds, edit the script and change the keybinds near the top.
 
@@ -16,11 +14,12 @@ Either make the iron delivery quest a first slot favorite quest, or do it once s
 
 Take a full stack of iron into your inventory and set your first item set to have 99 iron. The script will use this item set to restock. You can make this any of your first 4 item sets by changing the `item_set` keybind in the script to correspond to the correct set.
 
-Face the camera at the quest departure area. Aim for the same camera angle you return from quests at, but it's not strict.
+## Running the script
+Accept the quest from your favorites or quest history, then go to the quest departure area. The depart on quest prompt should be on your screen.
 
-Talk to the general quest giver and highlight the iron delivery quest in your favorites or quest history.
+Press F12 to start the script. F12 again to stop after the current loop. F11 to stop immediately and restart the script.
 
-F12 with the game focused to start. F12 again to stop after the current loop. F11 to stop immediately.
+Note that F12 can't be used to stop during the first quest completion.
 
 ## Troubleshooting
 If you run MHF as admin, edit the script and change the line `run_as_admin := false` to `run_as_admin := true`, or run the script as admin yourself.
