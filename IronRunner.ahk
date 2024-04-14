@@ -298,7 +298,9 @@ key_up(key) {
     }
 
     startup() {
-        key_press(interact)
+        if !is_quest_depart_box_visible(coordinates.quest_depart) {
+            key_press(interact)
+        }
         depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
         deposit_iron()
