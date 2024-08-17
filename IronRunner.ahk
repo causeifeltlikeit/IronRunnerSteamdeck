@@ -86,6 +86,18 @@ wait_for_lobby(season_coord) {
     }
 }
 
+handle_startup(season_coord, quest_depart_coord) {
+    season_visible := is_season_daytime_box_visible(season_coord)
+    quest_depart_visible := is_quest_depart_box_visible(quest_depart_coord)
+    if (!season_visible && !quest_depart_visible) {
+        MsgBox("Couldn't find the game UI. Make sure your UI isn't stretched or discolored and that you're starting at the right place.")
+        Exit
+    }
+    if !quest_depart_visible {
+        key_press(interact)
+    }
+}
+
 get_to_quest_npc(season_coord) {
     key_down(sprint)
     key_down(move_back)
@@ -130,7 +142,7 @@ get_to_departure_dialog() {
     key_up(sprint)
 }
 
-depart_on_quest(season_coord, quest_accept_coord, quest_depart_coord) {
+depart_on_quest(quest_depart_coord) {
     while !is_quest_depart_box_visible(quest_depart_coord) {
         Sleep(50)
     }
@@ -260,10 +272,8 @@ key_up(key) {
     }
 
     startup() {
-        if !is_quest_depart_box_visible(coordinates.quest_depart) {
-            key_press(interact)
-        }
-        depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
+        handle_startup(coordinates.season, coordinates.quest_depart)
+        depart_on_quest(coordinates.quest_depart)
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
         deposit_iron()
         wait_for_rewards(coordinates.reward)
@@ -280,11 +290,10 @@ key_up(key) {
             resupply_at_chest()
             iron_left := 99
             get_to_departure_dialog_from_box()
-            depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
         } else {
             get_to_departure_dialog()
-            depart_on_quest(coordinates.season, coordinates.quest_accept, coordinates.quest_depart)
         }
+        depart_on_quest(coordinates.quest_depart)
         get_to_red_box(coordinates.health, coordinates.ore_deposit)
         deposit_iron()
         wait_for_rewards(coordinates.reward)
