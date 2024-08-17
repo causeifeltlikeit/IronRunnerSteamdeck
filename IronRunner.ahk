@@ -131,12 +131,7 @@ get_to_departure_dialog() {
 }
 
 depart_on_quest(season_coord, quest_accept_coord, quest_depart_coord) {
-    connection_error_check := A_Now
     while !is_quest_depart_box_visible(quest_depart_coord) {
-        if (DateDiff(A_Now, connection_error_check, "Seconds") > 60) {
-            recover_from_connection_error(season_coord, quest_accept_coord)
-            connection_error_check := A_Now
-        }
         Sleep(50)
     }
     key_press(confirm)
@@ -219,39 +214,6 @@ get_to_departure_dialog_from_box() {
     key_up(move_left)
     Sleep(1500)
     key_press(interact)
-    key_up(move_forward)
-    key_up(sprint)
-}
-
-recover_from_connection_error(season_coord, quest_accept_coord) {
-    key_press(confirm)
-    key_down(sprint)
-    key_down(move_forward)
-    key_down(move_left)
-    Sleep(2000)
-    key_up(move_forward)
-    key_up(move_left)
-    key_down(move_back)
-    Sleep(2800)
-    key_down(move_left)
-    while is_season_daytime_box_visible(season_coord) {
-        key_press_double(interact, confirm)
-    }
-    key_up(move_left)
-    key_up(move_back)
-    key_up(sprint)
-    accept_quest(season_coord, quest_accept_coord)
-    key_down(sprint)
-    key_down(move_forward)
-    Sleep(500)
-    key_down(move_right)
-    Sleep(1000)
-    key_up(move_right)
-    Sleep(1500)
-    Loop 5 {
-        key_press(interact)
-        Sleep(100)
-    }
     key_up(move_forward)
     key_up(sprint)
 }
