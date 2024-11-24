@@ -1,4 +1,4 @@
-; v1.2.2
+; v1.2.3
 #Requires AutoHotkey v2
 #SingleInstance
 
@@ -56,11 +56,15 @@ class UICoordinates {
             Exit
         }
         this.season := Coordinate(210, 20)
-        this.quest_accept := [Coordinate(1250, 690), Coordinate(950, 510), Coordinate(630, 329), Coordinate(310, 210)][resolution_idx]
-        this.quest_depart := [Coordinate(1100, 666), Coordinate(910, 487), Coordinate(610, 306), Coordinate(280, 186)][resolution_idx]
+        this.quest_accept := [Coordinate(1250, 690), Coordinate(950, 510), Coordinate(630, 329), Coordinate(310, 210)][
+            resolution_idx]
+        this.quest_depart := [Coordinate(1100, 666), Coordinate(910, 487), Coordinate(610, 306), Coordinate(280, 186)][
+            resolution_idx]
         this.health := Coordinate(120, 17)
-        this.ore_deposit := [Coordinate(2534, 174), Coordinate(1893, 174), Coordinate(1254, 174), Coordinate(614, 174)][resolution_idx]
-        this.reward := [Coordinate(2172, 131), Coordinate(1531, 131), Coordinate(892, 131), Coordinate(252, 131)][resolution_idx]
+        this.ore_deposit := [Coordinate(2534, 174), Coordinate(1893, 174), Coordinate(1254, 174), Coordinate(614, 174)][
+            resolution_idx]
+        this.reward := [Coordinate(2172, 131), Coordinate(1531, 131), Coordinate(892, 131), Coordinate(252, 131)][
+            resolution_idx]
     }
 }
 
@@ -90,7 +94,9 @@ handle_startup(season_coord, quest_depart_coord) {
     season_visible := is_season_daytime_box_visible(season_coord)
     quest_depart_visible := is_quest_depart_box_visible(quest_depart_coord)
     if (!season_visible && !quest_depart_visible) {
-        MsgBox("Couldn't find the game UI. Make sure your UI isn't stretched or discolored and that you're starting at the right place.")
+        MsgBox(
+            "Couldn't find the game UI. Make sure your UI isn't stretched or discolored and that you're starting at the right place."
+        )
         Exit
     }
     if !quest_depart_visible {
@@ -107,6 +113,7 @@ get_to_quest_npc(season_coord) {
     while is_season_daytime_box_visible(season_coord) {
         key_press_double(interact, confirm)
     }
+    Sleep(50)
     key_up(move_left)
     key_up(move_back)
     key_up(sprint)
@@ -130,9 +137,10 @@ accept_quest(season_coord, quest_accept_coord) {
 }
 
 get_to_departure_dialog() {
-    key_down(sprint)
     key_down(move_forward)
-    Sleep(500)
+    Sleep(200)
+    key_down(sprint)
+    Sleep(300)
     key_down(move_right)
     Sleep(1000)
     key_up(move_right)
@@ -157,7 +165,8 @@ get_to_red_box(health_coord, ore_deposit_coord) {
         Sleep(50)
     }
     fallback_check := A_Now
-    while (!PixelSearch(&_, &_, ore_deposit_coord.x, ore_deposit_coord.y, ore_deposit_coord.x, ore_deposit_coord.y, 0x7D6851, 10)) {
+    while (!PixelSearch(&_, &_, ore_deposit_coord.x, ore_deposit_coord.y, ore_deposit_coord.x, ore_deposit_coord.y,
+        0x7D6851, 10)) {
         if (DateDiff(A_Now, fallback_check, "Seconds") > 5) {
             break
         }
@@ -170,7 +179,7 @@ get_to_red_box(health_coord, ore_deposit_coord) {
 deposit_iron() {
     key_press(confirm)
     key_press(confirm)
-    Loop 5 {
+    loop 5 {
         key_press(menu_up)
         key_press(confirm)
     }
@@ -196,15 +205,16 @@ send_rewards_to_box() {
 }
 
 cancel_quest_endscreen() {
-    Loop 20 {
+    loop 20 {
         key_press(start_menu)
     }
 }
 
 resupply_at_chest() {
-    key_down(sprint)
     key_down(move_forward)
-    Sleep(500)
+    Sleep(200)
+    key_down(sprint)
+    Sleep(300)
     key_down(move_right)
     Sleep(2000)
     key_up(move_right)
