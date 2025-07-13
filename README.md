@@ -10,6 +10,8 @@ Your game's colors must not be altered e.g. by reshade or other color filters.
 ## Setup
 If you've changed the ingame keybinds, edit the script and change the keybinds near the top.
 
+If you want the script to stop after a set number of quest completions, edit the script and change `max_completions := 0` to the number of completions you want. Setting `close_after_max := false` to true makes the script exit the game after reaching the set max.
+
 In `Options > Input Options` set `Other Player Status` to `TYPE 2` and `Town Movement` to `TYPE 1`. These make it so the interact key won't interact with other players and so you're not always sprinting.
 
 Either make the iron delivery quest a first slot favorite quest, or do it once so it's in your quest history.
