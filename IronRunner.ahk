@@ -4,6 +4,8 @@
 
 run_as_admin := false
 input_delay := 50
+max_completions := 0
+close_after_max := false
 
 ; Keybinds
 ; For valid key names, see https://www.autohotkey.com/docs/v2/KeyList.htm
@@ -52,7 +54,9 @@ class UICoordinates {
             }
         }
         if (resolution_idx == 0) {
-            MsgBox("Unsupported game resolution. Please run the game at 2560x1440, 1920x1080, 1280x720 or 640x480.")
+            MsgBox(
+                "Unsupported game resolution. Please run the game at 2560x1440, 1920x1080, 1280x720 or 640x480.`nDetected resolution: " .
+                client_width . "x" . client_height)
             Exit
         }
         this.season := Coordinate(210, 20)
@@ -242,7 +246,7 @@ get_to_departure_dialog_from_box() {
 
 key_press(key) {
     key_down(key)
-    Sleep(50)
+    Sleep(input_delay)
     key_up(key)
     Sleep(input_delay)
 }
@@ -250,7 +254,7 @@ key_press(key) {
 key_press_double(key1, key2) {
     key_down(key1)
     key_down(key2)
-    Sleep(50)
+    Sleep(input_delay)
     key_up(key1)
     key_up(key2)
     Sleep(input_delay)
@@ -275,6 +279,8 @@ key_up(key) {
         coordinates := UICoordinates(width, height)
         static iron_left
         iron_left := 99
+        static loops_completed
+        loops_completed := 0
         startup()
         SetTimer(runner, 1)
     } else {
@@ -290,10 +296,20 @@ key_up(key) {
         send_rewards_to_box()
         cancel_quest_endscreen()
         iron_left -= 3
+        loops_completed += 1
     }
 
     runner() {
         wait_for_lobby(coordinates.season)
+        if (max_completions > 0 && loops_completed >= max_completions) {
+            if close_after_max {
+                ProcessClose("mhf.exe")
+                ExitApp
+            }
+            SetTimer(, 0)
+            toggle := false
+            return
+        }
         get_to_quest_npc(coordinates.season)
         accept_quest(coordinates.season, coordinates.quest_accept)
         if (iron_left < 3) {
@@ -310,5 +326,6 @@ key_up(key) {
         send_rewards_to_box()
         cancel_quest_endscreen()
         iron_left -= 3
+        loops_completed += 1
     }
 }
