@@ -10,7 +10,7 @@ Your game's colors must not be altered e.g. by reshade or other color filters.
 ## Setup
 If you've changed the ingame keybinds, edit the script and change the keybinds near the top.
 
-In `Options > Input Options` set `Other Player Status` to `TYPE 2`. This makes it so the interact key won't interact with other players.
+In `Options > Input Options` set `Other Player Status` to `TYPE 2` and `Town Movement` to `TYPE 1`. These make it so the interact key won't interact with other players and so you're not always sprinting.
 
 Either make the iron delivery quest a first slot favorite quest, or do it once so it's in your quest history.
 
