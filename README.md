@@ -13,7 +13,7 @@ sudo pacman -S gnome-screenshot
 sudo steamos-readonly enable
 ```
 
-Set up conda environment:
+Set up conda environment (If you have conda installed otherwise just install with pip normally):
 
 ```bash
 conda create -n ironrunner python=3.11
